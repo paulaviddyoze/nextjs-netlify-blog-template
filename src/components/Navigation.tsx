@@ -14,29 +14,20 @@ export default function Navigation({ pages }) {
         <ul>
           <li>
             <Link href="/">
-              <a className={router.pathname === "/" ? "active" : null}>about</a>
+              
+              <a className={router.pathname === "/" ? "active" : null}>Home</a>
             </Link>
           </li>
           {pages.map((page, index) => (
             <li key={index}>
             <Link href={`/${page.slug}`}>
-              <a>
+              <a className={router.query.page === page.slug ? 'active' : null}>
                 {page.title}
               </a>
             </Link>
           </li>
           ))}
-          {/* <li>
-            <Link href="/contact">
-              <a
-                className={
-                  router.pathname.startsWith("/") ? "active" : null
-                }
-              >
-                contact
-              </a>
-            </Link>
-          </li> */}
+         
           <li>
             <Link href="/posts">
               <a
@@ -44,7 +35,7 @@ export default function Navigation({ pages }) {
                   router.pathname.startsWith("/posts") ? "active" : null
                 }
               >
-                blog
+                Blog
               </a>
             </Link>
           </li>
