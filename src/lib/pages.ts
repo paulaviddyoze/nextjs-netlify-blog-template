@@ -3,19 +3,18 @@ import matter from "gray-matter";
 import path from "path";
 import yaml from "js-yaml";
 
-const postsDirectory = path.join(process.cwd(), "content/posts");
+const postsDirectory = path.join(process.cwd(), "content/pages");
 
-export type PostContent = {
-  readonly date: string;
+export type PageContent = {
   readonly title: string;
   readonly slug: string;
-  readonly tags?: string[];
+  readonly image: string;
   readonly fullPath: string;
 };
 
-let postCache: PostContent[];
+let postCache: PageContent[];
 
-export function fetchPostContent(): PostContent[] {
+export function fetchPageContent(): PageContent[] {
 
   if (postCache) {
     return postCache;
@@ -36,9 +35,8 @@ export function fetchPostContent(): PostContent[] {
         },
       });
       const matterData = matterResult.data as {
-        date: string;
         title: string;
-        tags: string[];
+        image: string;
         slug: string;
         fullPath: string,
       };
@@ -52,32 +50,10 @@ export function fetchPostContent(): PostContent[] {
           "slug field not match with the path of its content source"
         );
       }
-
       return matterData;
     });
-  // Sort posts by date
-  postCache = allPostsData.sort((a, b) => {
-    if (a.date < b.date) {
-      return 1;
-    } else {
-      return -1;
-    }
-  });
+
+  postCache = allPostsData;
   return postCache;
 }
 
-export function countPosts(tag?: string): number {
-  return fetchPostContent().filter(
-    (it) => !tag || (it.tags && it.tags.includes(tag))
-  ).length;
-}
-
-export function listPostContent(
-  page: number,
-  limit: number,
-  tag?: string
-): PostContent[] {
-  return fetchPostContent()
-    .filter((it) => !tag || (it.tags && it.tags.includes(tag)))
-    .slice((page - 1) * limit, page * limit);
-}

@@ -5,6 +5,8 @@ media_folder: public/images
 public_folder: /images
 publish_mode: editorial_workflow
 
+local_backend: true
+
 collections:
   - name: "pages"
     label: "Pages"

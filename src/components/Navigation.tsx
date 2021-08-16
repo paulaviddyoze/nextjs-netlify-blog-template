@@ -17,6 +17,17 @@ export default function Navigation() {
             </Link>
           </li>
           <li>
+            <Link href="/contact">
+              <a
+                className={
+                  router.pathname.startsWith("/") ? "active" : null
+                }
+              >
+                contact
+              </a>
+            </Link>
+          </li>
+          <li>
             <Link href="/posts">
               <a
                 className={
