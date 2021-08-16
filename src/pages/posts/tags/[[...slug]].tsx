@@ -9,6 +9,7 @@ import { countPosts, listPostContent, PostContent } from "../../../lib/posts";
 import { listPageContent } from "../../../lib/pages";
 import { getTag, listTags, TagContent } from "../../../lib/tags";
 import Head from "next/head";
+import PagesManifestPlugin from "next/dist/build/webpack/plugins/pages-manifest-plugin";
 
 type Props = {
   posts: PostContent[];
@@ -34,6 +35,7 @@ export default function Index({ posts, tag, pagination, page, pages }: Props) {
 }
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
+  const pages = listPageContent();
   const queries = params.slug as string[];
   const [slug, page] = [queries[0], queries[1]];
   const posts = listPostContent(
@@ -50,8 +52,9 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     posts: PostContent[];
     tag: TagContent;
     pagination: { current: number; pages: number };
+    pages: object[];
     page?: string;
-  } = { posts, tag, pagination };
+  } = { posts, tag, pagination, pages };
   if (page) {
     props.page = page;
   }
@@ -61,7 +64,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const pages = listPageContent();
+  
   const paths = listTags().flatMap((tag) => {
     const pagesCount = Math.ceil(countPosts(tag.slug) / config.posts_per_page);
     return Array.from(Array(pagesCount).keys()).map((page) =>
@@ -77,6 +80,5 @@ export const getStaticPaths: GetStaticPaths = async () => {
   return {
     paths: paths,
     fallback: false,
-    pages
   };
 };
