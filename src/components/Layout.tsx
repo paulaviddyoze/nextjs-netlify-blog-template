@@ -3,6 +3,7 @@ import Navigation from "./Navigation";
 
 type Props = {
   children: React.ReactNode;
+  pages: object[];
 };
 export default function Layout({ pages, children }: Props) {
   return (

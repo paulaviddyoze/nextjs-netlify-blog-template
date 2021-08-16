@@ -6,6 +6,7 @@ import TwitterCardMeta from "../../../components/meta/TwitterCardMeta";
 import TagPostList from "../../../components/TagPostList";
 import config from "../../../lib/config";
 import { countPosts, listPostContent, PostContent } from "../../../lib/posts";
+import { listPageContent } from "../../../lib/pages";
 import { getTag, listTags, TagContent } from "../../../lib/tags";
 import Head from "next/head";
 
@@ -17,12 +18,13 @@ type Props = {
     current: number;
     pages: number;
   };
+  pages: object[];
 };
-export default function Index({ posts, tag, pagination, page }: Props) {
+export default function Index({ posts, tag, pagination, page, pages }: Props) {
   const url = `/posts/tags/${tag.name}` + (page ? `/${page}` : "");
   const title = tag.name;
   return (
-    <Layout>
+    <Layout pages={pages}>
       <BasicMeta url={url} title={title} />
       <OpenGraphMeta url={url} title={title} />
       <TwitterCardMeta url={url} title={title} />
@@ -59,9 +61,10 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
+  const pages = listPageContent();
   const paths = listTags().flatMap((tag) => {
-    const pages = Math.ceil(countPosts(tag.slug) / config.posts_per_page);
-    return Array.from(Array(pages).keys()).map((page) =>
+    const pagesCount = Math.ceil(countPosts(tag.slug) / config.posts_per_page);
+    return Array.from(Array(pagesCount).keys()).map((page) =>
       page === 0
         ? {
             params: { slug: [tag.slug] },
@@ -74,5 +77,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
   return {
     paths: paths,
     fallback: false,
+    pages
   };
 };
