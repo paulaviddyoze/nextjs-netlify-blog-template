@@ -4,7 +4,7 @@ import Navigation from "./Navigation";
 type Props = {
   children: React.ReactNode;
 };
-export default function Layout({ children }: Props) {
+export default function Layout({ pages, children }: Props) {
   return (
     <div className="root">
       <Head>
@@ -15,7 +15,7 @@ export default function Layout({ children }: Props) {
         <meta name="theme-color" content="#fff" />
       </Head>
       <nav>
-        <Navigation />
+        <Navigation pages={pages} />
       </nav>
       <main>{children}</main>
       <style jsx>

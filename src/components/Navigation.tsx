@@ -3,7 +3,8 @@ import { useRouter } from "next/router";
 import Burger from "./Burger";
 import { useState } from "react";
 
-export default function Navigation() {
+
+export default function Navigation({ pages }) {
   const router = useRouter();
   const [active, setActive] = useState(false);
   return (
@@ -16,7 +17,16 @@ export default function Navigation() {
               <a className={router.pathname === "/" ? "active" : null}>about</a>
             </Link>
           </li>
-          <li>
+          {pages.map((page, index) => (
+            <li key={index}>
+            <Link href={`/${page.slug}`}>
+              <a>
+                {page.title}
+              </a>
+            </Link>
+          </li>
+          ))}
+          {/* <li>
             <Link href="/contact">
               <a
                 className={
@@ -26,7 +36,7 @@ export default function Navigation() {
                 contact
               </a>
             </Link>
-          </li>
+          </li> */}
           <li>
             <Link href="/posts">
               <a

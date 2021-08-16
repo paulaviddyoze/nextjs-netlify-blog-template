@@ -41,7 +41,6 @@ export function fetchPageContent(): PageContent[] {
         fullPath: string,
       };
       matterData.fullPath = fullPath;
-
       const slug = fileName.replace(/\.mdx$/, "");
 
       // Validate slug string
@@ -55,5 +54,9 @@ export function fetchPageContent(): PageContent[] {
 
   postCache = allPostsData;
   return postCache;
+}
+
+export function listPageContent(): PageContent[] {
+  return fetchPageContent()
 }
 

@@ -10,16 +10,18 @@ type Props = {
   slug: string;
   image?: string;
   children: React.ReactNode;
+  pages: object[];
 };
 export default function PageLayout({
   title,
   slug,
   image,
   children,
+  pages,
 }: Props) {
 
   return (
-    <Layout>
+    <Layout pages={pages}>
       <BasicMeta
         url={`/${slug}`}
         title={title}

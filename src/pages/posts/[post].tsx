@@ -4,10 +4,12 @@ import { MdxRemote } from "next-mdx-remote/types";
 import hydrate from "next-mdx-remote/hydrate";
 import matter from "gray-matter";
 import { fetchPostContent } from "../../lib/posts";
+import { listPageContent } from "../../lib/pages";
 import fs from "fs";
 import yaml from "js-yaml";
 import { parseISO } from 'date-fns';
 import PostLayout from "../../components/PostLayout";
+
 
 import InstagramEmbed from "react-instagram-embed";
 import YouTube from "react-youtube";
@@ -21,6 +23,7 @@ export type Props = {
   author: string;
   description?: string;
   source: MdxRemote.Source;
+  pages: object[];
 };
 
 const components = { InstagramEmbed, YouTube, TwitterTweetEmbed };
@@ -38,6 +41,7 @@ export default function Post({
   author,
   description = "",
   source,
+  pages,
 }: Props) {
 
   const content = hydrate(source, { components })
@@ -50,6 +54,7 @@ export default function Post({
       tags={tags}
       author={author}
       description={description}
+      pages={pages}
     >
       {content}
     </PostLayout>
@@ -65,6 +70,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
+  const pages = listPageContent();
   const slug = params.post as string;
   const source = fs.readFileSync(slugToPostContent[slug].fullPath, "utf8");
   const { content, data } = matter(source, {
@@ -73,6 +79,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const mdxSource = await renderToString(content, { components, scope: data });
   return {
     props: {
+      pages,
       title: data.title,
       dateString: data.date,
       slug: data.slug,

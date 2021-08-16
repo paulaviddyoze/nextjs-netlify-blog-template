@@ -3,7 +3,7 @@ import renderToString from "next-mdx-remote/render-to-string";
 import { MdxRemote } from "next-mdx-remote/types";
 import hydrate from "next-mdx-remote/hydrate";
 import matter from "gray-matter";
-import { fetchPageContent } from "../lib/pages";
+import { fetchPageContent, listPageContent } from "../lib/pages";
 import fs from "fs";
 import yaml from "js-yaml";
 import PageLayout from "../components/PageLayout";
@@ -16,6 +16,7 @@ export type Props = {
   title: string;
   slug: string;
   image: string;
+  pages: object[];
   source: MdxRemote.Source;
 };
 
@@ -30,6 +31,7 @@ export default function Post({
   title,
   slug,
   image,
+  pages,
   source
 }: Props) {
   const content = hydrate(source, { components })
@@ -38,6 +40,7 @@ export default function Post({
       title={title}
       slug={slug}
       image={image}
+      pages={pages}
     >
       {content}
     </PageLayout>
@@ -53,6 +56,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
+  const pages = listPageContent();
   const slug = params.page as string;
   const source = fs.readFileSync(slugToPostContent[slug].fullPath, "utf8");
   const { content, data } = matter(source, {
@@ -61,6 +65,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const mdxSource = await renderToString(content, { components, scope: data });
   return {
     props: {
+      pages,
       title: data.title,
       slug: data.slug,
       image: data.image,

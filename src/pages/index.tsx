@@ -3,10 +3,12 @@ import BasicMeta from "../components/meta/BasicMeta";
 import OpenGraphMeta from "../components/meta/OpenGraphMeta";
 import TwitterCardMeta from "../components/meta/TwitterCardMeta";
 import { SocialList } from "../components/SocialList";
+import { GetStaticProps } from "next";
+import { listPageContent } from "../lib/pages";
 
-export default function Index() {
+export default function Index({pages}) {
   return (
-    <Layout>
+    <Layout pages={pages}>
       <BasicMeta url={"/"} />
       <OpenGraphMeta url={"/"} />
       <TwitterCardMeta url={"/"} />
@@ -60,3 +62,14 @@ export default function Index() {
     </Layout>
   );
 }
+
+export const getStaticProps: GetStaticProps = async () => {
+  const pages = listPageContent();
+  
+  return {
+    props: {
+      pages,
+
+    },
+  };
+};
