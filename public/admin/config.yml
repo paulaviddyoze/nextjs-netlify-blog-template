@@ -33,6 +33,42 @@ collections:
         media_library:
           allow_multiple: false
           media_folder: "/public/uploads"
+      - label: "Builder"
+        name: "builder"
+        widget: "list"
+        types:
+          - label: "Header image"
+            name: "header"
+            widget: "object"
+            fields:
+              - label: "Title"
+                name: "title"
+                widget: "string"
+                required: true
+              - label: "Background image"
+                name: "photo"
+                widget: "image"
+                media_library:
+                  allow_multiple: false
+                  media_folder: "/public/uploads"
+          - label: "CTA"
+            name: "cta"
+            widget: "object"
+            fields:
+              - label: "Title"
+                name: "title"
+                widget: "string"
+                required: true
+              - label: "Link"
+                name: "link"
+                widget: "string"
+          - label: "Content"
+            name: "content"
+            widget: "object"
+            fields:
+              - label: "Content"
+                name: "content"
+                widget: "markdown"
   - name: "config"
     label: "Config"
     delete: false
