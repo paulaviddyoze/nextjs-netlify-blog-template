@@ -1,4 +1,5 @@
 import React from "react";
+import Markdown from 'markdown-to-jsx';
 import styles from "../../public/styles/content.module.css";
 import Copyright from "./Copyright";
 import Layout from "./Layout";
@@ -11,13 +12,36 @@ type Props = {
   image?: string;
   children: React.ReactNode;
   pages: object[];
+  builder: object[];
 };
+
+const BuilderHeader = ({item}) => {
+  return (
+    <div>
+      <h3>{item.title} sdfsdf </h3>
+      <img src={item.photo} alt="" />
+    </div>
+  )
+}
+const BuilderCta = ({item}) => {
+  return (
+    <p>
+      <a href={item.link}>{item.title}</a>
+    </p>
+  )
+}
+const BuilderContent = ({item}) => {
+  return (
+    <Markdown>{item.content}</Markdown>
+  )
+}
 export default function PageLayout({
   title,
   slug,
   image,
   children,
   pages,
+  builder
 }: Props) {
 
   return (
@@ -36,6 +60,13 @@ export default function PageLayout({
           </header>
           <div><img src={image} alt="" style={{width: '200px'}} /></div>
           <div className={styles.content}>{children}</div>
+          {builder.map((item, index) => (
+            <div key={index}>
+            { item.type === 'header' && <BuilderHeader item={item} /> }
+            { item.type === 'cta' && <BuilderCta item={item} /> }
+            { item.type === 'content' && <BuilderContent item={item} /> }
+            </div>
+          ))}
         </article>
         <footer>
           <div className={"social-list"}>

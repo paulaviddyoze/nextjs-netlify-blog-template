@@ -18,6 +18,7 @@ export type Props = {
   image: string;
   pages: object[];
   source: MdxRemote.Source;
+  builder: object[];
 };
 
 const components = { InstagramEmbed, YouTube, TwitterTweetEmbed };
@@ -32,7 +33,8 @@ export default function Post({
   slug,
   image,
   pages,
-  source
+  source,
+  builder,
 }: Props) {
   const content = hydrate(source, { components })
   return (
@@ -41,6 +43,7 @@ export default function Post({
       slug={slug}
       image={image}
       pages={pages}
+      builder={builder}
     >
       {content}
     </PageLayout>
@@ -69,7 +72,8 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       title: data.title,
       slug: data.slug,
       image: data.image,
-      source: mdxSource
+      source: mdxSource,
+      builder: data.builder,
     },
   };
 };
