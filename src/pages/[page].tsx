@@ -66,6 +66,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     engines: { yaml: (s) => yaml.load(s, { schema: yaml.JSON_SCHEMA }) as object }
   });
   const mdxSource = await renderToString(content, { components, scope: data });
+  const builder = data.builder ? data.builder : null;
   return {
     props: {
       pages,
@@ -73,7 +74,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       slug: data.slug,
       image: data.image,
       source: mdxSource,
-      builder: data.builder,
+      builder,
     },
   };
 };

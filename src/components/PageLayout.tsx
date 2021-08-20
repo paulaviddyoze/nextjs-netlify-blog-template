@@ -12,7 +12,7 @@ type Props = {
   image?: string;
   children: React.ReactNode;
   pages: object[];
-  builder: object[];
+  builder: any;
 };
 
 const BuilderHeader = ({item}) => {
@@ -60,7 +60,7 @@ export default function PageLayout({
           </header>
           <div><img src={image} alt="" style={{width: '200px'}} /></div>
           <div className={styles.content}>{children}</div>
-          {builder.map((item, index) => (
+          {builder && builder.map((item, index) => (
             <div key={index}>
             { item.type === 'header' && <BuilderHeader item={item} /> }
             { item.type === 'cta' && <BuilderCta item={item} /> }
